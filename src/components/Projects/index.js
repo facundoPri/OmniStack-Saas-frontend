@@ -1,16 +1,21 @@
 import React, { useEffect, useCallback, useState } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
+
 import ProjectsActions from '~/store/ducks/projects';
+import MembersActions from '~/store/ducks/members';
 
 import Modal from '~/components/Modal';
 import Button from '~/styles/components/Button';
+import Members from '~/components/Members';
 
 import { Container, Project } from './styles';
 
 const Projects = () => {
   const activeTeam = useSelector(state => state.teams.active);
   const projects = useSelector(state => state.projects);
+  const members = useSelector(state => state.members);
+
   const dispatch = useDispatch();
 
   const [newProject, setNewProject] = useState('');
@@ -39,7 +44,9 @@ const Projects = () => {
           <Button onClick={() => dispatch(ProjectsActions.openProjectModal())}>
             + Novo
           </Button>
-          <Button onClick={() => {}}>Membros</Button>
+          <Button onClick={() => dispatch(MembersActions.openMembersModal())}>
+            Membros
+          </Button>
         </div>
       </header>
       {projects.data.map(project => (
@@ -72,6 +79,7 @@ const Projects = () => {
           </form>
         </Modal>
       )}
+      {members.membersModalOpen && <Members />}
     </Container>
   );
 };
