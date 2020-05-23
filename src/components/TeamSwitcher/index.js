@@ -30,6 +30,7 @@ export default function TeamSwitcher() {
       e.preventDefault();
 
       dispatch(TeamsActions.createTeamRequest(newTeam));
+      setNewTeam('');
     },
     [dispatch, newTeam]
   );
