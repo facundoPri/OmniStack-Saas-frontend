@@ -7,6 +7,8 @@ const { Types, Creators } = createActions({
   signInRequest: ['email', 'password'],
   signInSuccess: ['token'],
   signOut: null,
+  signUpRequest: ['name', 'email', 'password'],
+  signUpSuccess: ['token'],
 });
 
 export const AuthTypes = Types;
