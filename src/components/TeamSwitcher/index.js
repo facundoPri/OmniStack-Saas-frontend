@@ -1,8 +1,12 @@
+/* eslint-disable import/no-named-as-default-member */
 import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import TeamsActions from '~/store/ducks/teams';
 
-import { Container, TeamList, Team } from './styles';
+import Button from '~/styles/components/Button';
+import Modal from '~/components/Modal';
+
+import { Container, TeamList, Team, NewTeam } from './styles';
 
 export default function TeamSwitcher() {
   const dispatch = useDispatch();
@@ -30,6 +34,29 @@ export default function TeamSwitcher() {
             />
           </Team>
         ))}
+        <NewTeam onClick={() => dispatch(TeamsActions.openTeamModal())}>
+          NOVO
+        </NewTeam>
+        {teams.teamModalOpen && (
+          <Modal>
+            <h1>Criar time</h1>
+            <form onSubmit={() => {}}>
+              <span>NOME</span>
+              <input name="newTeam" />
+
+              <Button size="big" type="submit">
+                Salvar
+              </Button>
+              <Button
+                onClick={() => dispatch(TeamsActions.closeTeamModal())}
+                size="small"
+                color="gray"
+              >
+                Cancelar
+              </Button>
+            </form>
+          </Modal>
+        )}
       </TeamList>
     </Container>
   );
