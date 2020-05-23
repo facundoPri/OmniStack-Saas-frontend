@@ -16,7 +16,6 @@ export function* createTeam({ name }) {
     yield put(TeamsAction.createTeamSuccess(response.data));
     yield put(TeamsAction.closeTeamModal());
   } catch (err) {
-    console.log(err);
     yield put(
       toastrActions.add({
         type: 'error',
