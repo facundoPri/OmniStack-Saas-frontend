@@ -9,7 +9,6 @@ export function* getMembers() {
 
   yield put(MembersAction.getMembersSuccess(response.data));
 }
-
 export function* updateMember({ id, roles }) {
   try {
     yield call(api.put, `members/${id}`, {
@@ -20,6 +19,29 @@ export function* updateMember({ id, roles }) {
         type: 'success',
         title: 'Membro atualizado',
         message: 'O membro foi atualizado com sucesso',
+      })
+    );
+  } catch (err) {
+    yield put(
+      toastrActions.add({
+        type: 'error',
+        title: 'Erro na operação',
+        message: 'Houve um erro, tente novamente!',
+      })
+    );
+  }
+}
+
+export function* inviteMember({ email }) {
+  try {
+    yield call(api.post, 'invites', {
+      invites: [email],
+    });
+    yield put(
+      toastrActions.add({
+        type: 'success',
+        title: 'Convite enviado',
+        message: 'Enviamos um convite ao usuário para participar do time',
       })
     );
   } catch (err) {
