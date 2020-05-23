@@ -1,5 +1,5 @@
 /* eslint-disable import/no-named-as-default-member */
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import TeamsActions from '~/store/ducks/teams';
 
@@ -11,6 +11,7 @@ import { Container, TeamList, Team, NewTeam } from './styles';
 export default function TeamSwitcher() {
   const dispatch = useDispatch();
   const teams = useSelector(state => state.teams);
+  const [newTeam, setNewTeam] = useState('');
 
   useEffect(() => {
     dispatch(TeamsActions.getTeamsRequest());
@@ -21,6 +22,15 @@ export default function TeamSwitcher() {
       dispatch(TeamsActions.selectTeam(team));
     },
     [dispatch]
+  );
+
+  const handleCreateTeam = useCallback(
+    e => {
+      e.preventDefault();
+
+      dispatch(TeamsActions.createTeamRequest(newTeam));
+    },
+    [dispatch, newTeam]
   );
 
   return (
@@ -40,9 +50,13 @@ export default function TeamSwitcher() {
         {teams.teamModalOpen && (
           <Modal>
             <h1>Criar time</h1>
-            <form onSubmit={() => {}}>
+            <form onSubmit={handleCreateTeam}>
               <span>NOME</span>
-              <input name="newTeam" />
+              <input
+                name="newTeam"
+                value={newTeam}
+                onChange={e => setNewTeam(e.target.value)}
+              />
 
               <Button size="big" type="submit">
                 Salvar
