@@ -2,11 +2,12 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import TeamsActions from '~/store/ducks/teams';
+import AuthActions from '~/store/ducks/auth';
 
 import Button from '~/styles/components/Button';
 import Modal from '~/components/Modal';
 
-import { Container, TeamList, Team, NewTeam } from './styles';
+import { Container, TeamList, Team, NewTeam, Logout } from './styles';
 
 export default function TeamSwitcher() {
   const dispatch = useDispatch();
@@ -72,6 +73,7 @@ export default function TeamSwitcher() {
           </Modal>
         )}
       </TeamList>
+      <Logout onClick={() => dispatch(AuthActions.signOut())}>SAIR</Logout>
     </Container>
   );
 }
