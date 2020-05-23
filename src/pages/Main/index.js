@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import api from '~/services/api';
 
 // import { Container } from './styles';
 
 function Main() {
-  return <div />;
+  useEffect(() => {
+    api.get('/teste');
+  });
+
+  return <h1>Hello</h1>;
 }
 
 export default Main;
