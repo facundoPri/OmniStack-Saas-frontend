@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import ProjectsActions from '~/store/ducks/projects';
 import MembersActions from '~/store/ducks/members';
 
+import Can from '~/components/Can';
 import Modal from '~/components/Modal';
 import Button from '~/styles/components/Button';
 import Members from '~/components/Members';
@@ -41,9 +42,13 @@ const Projects = () => {
       <header>
         <h1>{activeTeam.name}</h1>
         <div>
-          <Button onClick={() => dispatch(ProjectsActions.openProjectModal())}>
-            + Novo
-          </Button>
+          <Can checkPermission="projects_create">
+            <Button
+              onClick={() => dispatch(ProjectsActions.openProjectModal())}
+            >
+              + Novo
+            </Button>
+          </Can>
           <Button onClick={() => dispatch(MembersActions.openMembersModal())}>
             Membros
           </Button>

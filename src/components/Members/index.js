@@ -5,6 +5,7 @@ import api from '~/services/api';
 
 import MembersActions from '~/store/ducks/members';
 
+import Can from '~/components/Can';
 import Modal from '~/components/Modal';
 import Button from '~/styles/components/Button';
 import { MembersList, Invite } from './styles';
@@ -37,32 +38,41 @@ export default function Members() {
     <Modal size="big">
       <h1>Membros</h1>
 
-      <Invite onSubmit={handleInvite}>
-        <input
-          name="invite"
-          placeholder="Convidar para o time"
-          value={invite}
-          onChange={e => setInvite(e.target.value)}
-        />
-        <Button type="submit">Enviar</Button>
-      </Invite>
+      <Can checkPermission="invites_create">
+        <Invite onSubmit={handleInvite}>
+          <input
+            name="invite"
+            placeholder="Convidar para o time"
+            value={invite}
+            onChange={e => setInvite(e.target.value)}
+          />
+          <Button type="submit">Enviar</Button>
+        </Invite>
+      </Can>
 
       <form>
         <MembersList>
           {members.data.map(member => (
             <li key={member.id}>
               <strong>{member.user.name}</strong>
-              <Select
-                isMulti
-                value={member.roles}
-                options={roles}
-                placeholder="Selecione uma permissão"
-                getOptionLabel={role => role.name}
-                getOptionValue={role => role.id}
-                onChange={value =>
-                  dispatch(MembersActions.updateMemberRequest(member.id, value))
-                }
-              />
+              <Can checkRole="administrador">
+                {can => (
+                  <Select
+                    isMulti
+                    isDisabled={!can}
+                    value={member.roles}
+                    options={roles}
+                    placeholder="Selecione uma permissão"
+                    getOptionLabel={role => role.name}
+                    getOptionValue={role => role.id}
+                    onChange={value =>
+                      dispatch(
+                        MembersActions.updateMemberRequest(member.id, value)
+                      )
+                    }
+                  />
+                )}
+              </Can>
             </li>
           ))}
         </MembersList>
